@@ -1,0 +1,16 @@
+.modif-cabecera{
+    line-height: 75px;
+}
+
+/*#reporte-titulos-dataTable_filter.dataTables_filter{
+     text-align: left;    
+}
+#reporte-inspecciones-dataTable_filter.dataTables_filter{
+     text-align: left;    
+}
+*/
+
+table.dataTable thead .sorting:after{
+    color: white!important; 
+}
+
