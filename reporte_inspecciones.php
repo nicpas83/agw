@@ -61,9 +61,6 @@ if (!isset($_POST['submit-filtro'])) {
                 
         -->
 
-        <?php
-        if (isset($_SESSION['perfil']) AND ( $_SESSION['perfil'] == "adm" OR $_SESSION['perfil'] == "seg")) {
-            ?>         
             <br />
             <div class="row">
                 <div class="col-lg-12">
@@ -93,10 +90,7 @@ if (!isset($_POST['submit-filtro'])) {
 
                 </div>
             </div>
-
-            <?php
-        }
-        ?>   
+  
         <br />        
 
         <?php

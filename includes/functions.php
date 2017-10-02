@@ -1537,8 +1537,8 @@ function tabla_reporte_inspecciones_resumen($perfil, $filtroPerfilId=null, $desd
         
         
     }elseif($perfil == "clie" OR $perfil == "clie2"){
-        $filtro = " AND t3.TITU_DEPO_ID = $filtroPerfilId";
-        $cantUsuario = ", COALESCE(SUM(IF(TITU_DEPO_ID = ".$filtroPerfilId.", TITU_CANTIDAD,null)),0) AS CANT_W_USUARIO";
+        $filtro = " AND t3.TITU_DEPO_ID = $filtroPerfilId ";
+        $cantUsuario = ", COALESCE(SUM(IF(TITU_DEPO_ID = $filtroPerfilId, TITU_CANTIDAD,null)),0) AS CANT_W_USUARIO";
 
             
     }elseif($perfil == "seg"){
@@ -1612,11 +1612,10 @@ function tabla_reporte_inspecciones_resumen($perfil, $filtroPerfilId=null, $desd
             WHERE TITU_FECHA_LIBERACION IS NULL
             GROUP BY TITU_PLANTA_ID, TITU_PRODUCTO
             )t3
-        ON t1.ACTA_PLANTA_ID = t3.TITU_PLANTA_ID AND PROD_NOMBRE = t3.TITU_PRODUCTO
+        ON t1.ACTA_PLANTA_ID = t3.TITU_PLANTA_ID AND PROD_NOMBRE = t3.TITU_PRODUCTO 
+            $filtro 
         
         WHERE CANT_VERIF > 0 OR CANT_W > 0
-            $filtro
-            
             ";
                 
     
