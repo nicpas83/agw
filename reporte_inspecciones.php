@@ -1,38 +1,32 @@
-<?php include "includes/init.php"; 
+<?php
+include "includes/init.php";
 verificar_sesion();
 ?>
 <?php include "includes/conexion.php"; ?>
 <?php include "includes/functions.php"; ?>
 
 
-<?php 
-
-$title = "Reporte de inspecciones"; 
+<?php
+$title = "Reporte de inspecciones";
 
 
 
 //si es primer ingreso 
-if(!isset($_POST['submit-filtro'])){
-    
-    $reporteInspeccionesResumen = tabla_reporte_inspecciones_resumen($_SESSION['perfil'],$_SESSION['filtroPerfilId']);
+if (!isset($_POST['submit-filtro'])) {
+//var_dump($_SESSION['filtroPerfilId']); die;
+    $reporteInspeccionesResumen = tabla_reporte_inspecciones_resumen($_SESSION['perfil'], $_SESSION['filtroPerfilId']);
 
-    $reporteInspecciones = tabla_reporte_inspecciones($_SESSION['perfil'],$_SESSION['filtroPerfilId']);
-
-
-}else{
+    $reporteInspecciones = tabla_reporte_inspecciones($_SESSION['perfil'], $_SESSION['filtroPerfilId']);
+} else {
 
     $desde = $_POST['desde'];
     $hasta = $_POST['hasta'];
     $planta = $_POST['planta'];
-    
     $filtroDin = $_POST['filtroDin']; //id  (value)
-    
-    $reporteInspeccionesResumen = tabla_reporte_inspecciones_resumen($_SESSION['perfil'],$_SESSION['filtroPerfilId'],$desde,$hasta,$planta,$filtroDin);
-    $reporteInspecciones = tabla_reporte_inspecciones($_SESSION['perfil'],$_SESSION['filtroPerfilId'],$desde,$hasta,$planta,$filtroDin);
-    
+
+    $reporteInspeccionesResumen = tabla_reporte_inspecciones_resumen($_SESSION['perfil'], $_SESSION['filtroPerfilId'], $desde, $hasta, $planta, $filtroDin);
+    $reporteInspecciones = tabla_reporte_inspecciones($_SESSION['perfil'], $_SESSION['filtroPerfilId'], $desde, $hasta, $planta, $filtroDin);
 }
-
-
 ?>
 
 
@@ -44,68 +38,74 @@ if(!isset($_POST['submit-filtro'])){
 <div id="page-wrapper">
     <div class="container-fluid">
 
-<!-- 
-        <div class="row">
-            <div class="col-lg-12">
-                <h2 class="page-header">Reporte de Inspecciones</h2>
-                <?php 
-                if(isset($_SESSION['perfil']) AND $_SESSION['perfil'] == "adm"){
-                ?>    
-                <h4>Alertas:</h4>
-                <ul>
-                    <?php //echo alerta_inspecciones(); ?>
-                </ul>    
-                    
-                <?php
-                }
-                ?>
-                
-                
-            </div>
-            
-        </div>
-        
- -->
-
-        <br />
-        <div class="row">
-            <div class="col-lg-12">
-                <h4>Posición a la fecha:</h4>
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered table-hover" id="reporte-inspeccionesResumen-dataTable">
-                        <thead class="panel-primary small">
-                            <tr class="panel-heading">
-                                <th>Última Inspección</th>
-                                <th>Días hasta hoy</th>
-                                <th>Planta Razón Social</th>
-                                <th>Planta Nombre Interno</th>
-                                <th>Producto</th>
-                                <th>Cant. Verificada</th>
-                                <th>Cant. Warrants a Hoy</th>
-                                <th>Stock libre disp.</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+        <!-- 
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="page-header">Reporte de Inspecciones</h2>
+        <?php
+        if (isset($_SESSION['perfil']) AND $_SESSION['perfil'] == "adm") {
+            ?>    
+                                <h4>Alertas:</h4>
+                                <ul>
+            <?php //echo alerta_inspecciones(); ?>
+                                </ul>    
+                                    
+            <?php
+        }
+        ?>
                         
-                            <?php  echo $reporteInspeccionesResumen; ?>
-                           
-                        </tbody>
-                    </table>
+                        
+                    </div>
+                    
                 </div>
-                <!-- /.table-responsive -->
-        
+                
+        -->
+
+        <?php
+        if (isset($_SESSION['perfil']) AND ( $_SESSION['perfil'] == "adm" OR $_SESSION['perfil'] == "seg")) {
+            ?>         
+            <br />
+            <div class="row">
+                <div class="col-lg-12">
+                    <h4>Posición a la fecha:</h4>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover" id="reporte-inspeccionesResumen-dataTable">
+                            <thead class="panel-primary small">
+                                <tr class="panel-heading">
+                                    <th>Última Inspección</th>
+                                    <th>Días hasta hoy</th>
+                                    <th>Planta Razón Social</th>
+                                    <th>Planta Nombre Interno</th>
+                                    <th>Producto</th>
+                                    <th>Cant. Verificada</th>
+                                    <th>Cant. Warrants a Hoy</th>
+                                    <th>Stock libre disp.</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <?php echo $reporteInspeccionesResumen; ?>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.table-responsive -->
+
+                </div>
             </div>
-        </div>
 
-<br />        
+            <?php
+        }
+        ?>   
+        <br />        
 
-<?php 
-if(isset($_SESSION['perfil']) AND ($_SESSION['perfil'] == "adm" OR $_SESSION['perfil'] == "seg")){
-?>         
-        <div class="row">
+        <?php
+        if (isset($_SESSION['perfil']) AND ( $_SESSION['perfil'] == "adm" OR $_SESSION['perfil'] == "seg")) {
+            ?>         
+            <div class="row">
                 <div class="col-lg-12">
                     <div class="table-responsive">
-                    <h4>Trazabilidad de Inspecciones:</h4>
+                        <h4>Trazabilidad de Inspecciones:</h4>
                         <table class="table table-striped table-bordered table-hover" id="reporte-inspecciones-dataTable">
                             <thead class="panel-primary small">
                                 <tr class="panel-heading">
@@ -127,24 +127,24 @@ if(isset($_SESSION['perfil']) AND ($_SESSION['perfil'] == "adm" OR $_SESSION['pe
                                 </tr>
                             </thead>
                             <tbody>
-                            
-                                <?php  echo $reporteInspecciones; ?>
-                               
+
+                                <?php echo $reporteInspecciones; ?>
+
                             </tbody>
                         </table>
                     </div>
                     <!-- /.table-responsive -->
-                    
+
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-        
-<?php
-}
-?>   
 
-    
+            <?php
+        }
+        ?>   
+
+
     </div>
     <!-- /.container-fluid -->
 </div>

@@ -1464,7 +1464,8 @@ function tabla_reporte_inspecciones($perfil, $filtroPerfilId=null, $desde=null, 
     
     }
     
-
+    //var_dump($sql.$filtroUsuario.$filtroReporte.$filtroHaving.$orderBy); die;
+    
     $result = mysqli_query($cnx, $sql.$filtroUsuario.$filtroReporte.$filtroHaving.$orderBy) OR die(mysqli_error($cnx));
     
     while($fila = mysqli_fetch_array($result)){
@@ -1563,15 +1564,14 @@ function tabla_reporte_inspecciones_resumen($perfil, $filtroPerfilId=null, $desd
     /** Filtro DINAMICO */
     if(!empty($filtroDin) AND ($perfil == "adm" OR $perfil == "seg")){
         $filtro = " AND t3.TITU_DEPO_ID = $filtroDin";
-        $cantUsuario = " COALESCE(SUM(IF(t.TITU_DEPO_ID = ".$filtroDin.", TITU_CANTIDAD,null)),0) AS CANT_W_USUARIO,";
-        //$filtroDep = " AND TITU_DEPO_ID = '$filtroDin'"; //en este caso ya estaba con la coma.
+        $cantUsuario = ", COALESCE(SUM(IF(TITU_DEPO_ID = ".$filtroDin.", TITU_CANTIDAD,null)),0) AS CANT_W_USUARIO";
+        $filtroDep = " AND TITU_DEPO_ID = '$filtroDin'"; //en este caso ya estaba con la coma.
     }
     
     
     $sql = "
         SELECT 
-        *
-        $cantUsuario 
+        * 
         FROM
             (SELECT 
             *
@@ -1606,6 +1606,7 @@ function tabla_reporte_inspecciones_resumen($perfil, $filtroPerfilId=null, $desd
             (SELECT  
             *,
             SUM(TITU_CANTIDAD) AS CANT_W
+            $cantUsuario
             FROM titulos
             INNER JOIN polizas ON TITU_POLIZA_NRO = POLI_POLIZA_NRO
             WHERE TITU_FECHA_LIBERACION IS NULL
